@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChecklistViewController: UITableViewController {
+class ChecklistViewController: UITableViewController, ItemDetailsVCDelegate {
     
     var checkList = [CheckLitsItem(text:"List 1", Checked: true),
                      CheckLitsItem(text:"Work", Checked: false),
@@ -106,14 +106,40 @@ class ChecklistViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        //who is my down stream Vc
+        //i will be its delegate
+        if(segue.identifier == "AddItem"){
+            let controller = segue.destination as!
+            ItemDetailsViewController
+            controller.delegate = self
+        }
+        
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
+    // Mark: ItemDetailsVc Protocol
+    func itemDetailsVCDidCancel(){
+        navigationController?.popViewController(animated: true)
+    }
+    func itemDetailsVc( _ control: ItemDetailsViewController,
+                        didFinishAdd item: CheckLitsItem) {
+        //append item to array
+        
+        //update the tableview
+        let newRow = checkList.count
+        checkList.append(item)
+        let indexPath = IndexPath(row: newRow, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
+        navigationController?.popViewController(animated: true)
+    }
+    func itemDetailsVC( _ control: ItemDetailsViewController,
+                        didFinishEdit item: CheckLitsItem){}
 
 }

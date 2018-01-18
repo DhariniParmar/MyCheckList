@@ -9,5 +9,14 @@
 import UIKit
 
 class CheckLitsItem: NSObject {
+    
+    var text = ""
+    var checked = false
+    
+    init(text: String, Checked: Bool){
+        
+        self.text = text
+        self.checked = Checked
 
+}
 }

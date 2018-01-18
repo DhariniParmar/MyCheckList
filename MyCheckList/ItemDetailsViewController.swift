@@ -8,6 +8,15 @@
 
 import UIKit
 
+protocol ItemDetailsVCDelegate: class {
+    func itemDetailsVCDidCancel()
+    func itemDetailsVc( _ control: ItemDetailsViewController,
+                        didFinishAdd item: CheckLitsItem)
+    func itemDetailsVC( _ control: ItemDetailsViewController,
+                        didFinishEdit item: CheckLitsItem)
+    
+}
+
 class ItemDetailsViewController: UITableViewController {
 
     override func viewDidLoad() {
@@ -19,22 +28,44 @@ class ItemDetailsViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-
+    
+    weak var delegate:ItemDetailsVCDelegate?
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        
+        delegate?.itemDetailsVCDidCancel()
+    }
+    
+    
+    @IBAction func Done(_ sender: UIBarButtonItem) {
+        //extract the textfield contect
+        let text = textField.text!
+        
+        //make a new checklistlitem object
+        let item = CheckLitsItem(text: text, Checked: false)
+        
+        //send it back to the upper strem VC
+        delegate?.itemDetailsVc(self, didFinishAdd: item)
+        
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    @IBOutlet weak var textField: UITextField!
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 1
     }
 
     /*
