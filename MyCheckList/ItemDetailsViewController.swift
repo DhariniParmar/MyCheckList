@@ -21,15 +21,18 @@ class ItemDetailsViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        if let item = itemtoEdit {
+        textField.text = item.text
+            self.title = "Edit Item"
+    } else
+    
+        {
+            title = "Add Item"
+        }
     }
     
     weak var delegate:ItemDetailsVCDelegate?
+    var itemtoEdit:CheckLitsItem?
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         
@@ -38,6 +41,12 @@ class ItemDetailsViewController: UITableViewController {
     
     
     @IBAction func Done(_ sender: UIBarButtonItem) {
+        //if edit, extrct the text, call delegate method finished editing otherwise do one else part
+        if let item = itemtoEdit{
+            item.text = textField.text!
+            delegate?.itemDetailsVC(self, didFinishEdit: item)
+            
+        } else {
         //extract the textfield contect
         let text = textField.text!
         
@@ -46,7 +55,7 @@ class ItemDetailsViewController: UITableViewController {
         
         //send it back to the upper strem VC
         delegate?.itemDetailsVc(self, didFinishAdd: item)
-        
+        }
     }
     
     

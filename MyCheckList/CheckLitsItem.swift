@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CheckLitsItem: NSObject {
+class CheckLitsItem: NSObject, Codable {
     
     var text = ""
     var checked = false
